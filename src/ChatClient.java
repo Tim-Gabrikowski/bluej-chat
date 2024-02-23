@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
 
 class ChatClient {
 
@@ -10,6 +11,11 @@ class ChatClient {
 			"Öffne Verbindung zu " + serverName + " auf Port 5001."
 		);
 		Socket connection = new Socket(serverName, 5001);
+
+		Scanner scanner = new Scanner(System.in);
+
+		System.out.print("Enter your username: ");
+		String username = scanner.nextLine();
 
 		try {
 			PrintWriter output = new PrintWriter(
@@ -34,7 +40,8 @@ class ChatClient {
 				try {
 					String message;
 					while ((message = input.readLine()) != null) {
-						System.out.println(message);
+						ChatMessage msg = ChatMessage.fromString(message);
+						System.out.println(msg.displayString());
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -47,7 +54,8 @@ class ChatClient {
 				try {
 					String message;
 					while ((message = stdIn.readLine()) != null) {
-						output.println("Client: " + message);
+						ChatMessage msg = new ChatMessage(message, username);
+						output.println(msg.toString());
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
