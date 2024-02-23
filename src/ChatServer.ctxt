@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.target=ChatServer
+comment0.text=\n\ Die\ Klasse\ ChatServer\ realisiert\ den\ Server\ f?r\ einen\ einfachen\n\ Chat.\ Der\ Server\ horcht\ auf\ Port\ 5000\ auf\ eine\ Verbindung\ von\ \n\ einem\ ChatClient.\ Wird\ eine\ Verbindung\ ge?ffnet,\ dann\ liest\ er\ \n\ wechselweise\ Eingaben\ vom\ Socket\ und\ gibt\ sie\ auf\ der\ Konsole\ aus\n\ und\ wartet\ dann\ auf\ eine\ Eingabe\ von\ der\ Konsole\ und\ schickt\ sie\n\ an\ den\ Client.\n\ \n\ @author\ \ \ Dr.\ Michael\ Janneck,\ Torsten\ Otto\n\ @version\ \ 2023-06-28\n
+comment1.params=args
+comment1.target=void\ main(java.lang.String[])
+numComments=2
