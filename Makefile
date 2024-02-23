@@ -43,7 +43,7 @@ $(CLS): $(OUT_DIR)/%.class: $(SRC_DIR)/%.java
 	$(JC) $(JCFLAGS) $<
 
 run: $(CLS)
-	java -cp $(OUT_DIR) $(CLASS)
+	java -cp $(OUT_DIR) $(CLASS) $(HOST)
 
 
 ##

@@ -3,9 +3,18 @@
 Starten von ChatClient und ChatServer im Terminal mit
 
 ```sh
+# Build
+make clean
+make all
+
+# Run
 cd out/
 java ChatServer
 java ChatClient <Host>
+
+#Run using Make
+make run CLASS=ChatServer
+make run CLASS=ChatClient HOST=<host>
 ```
 
 Dieses Projekt ist Teil einer Unterrichtseinheit zum Themenbereich "Verteilte
