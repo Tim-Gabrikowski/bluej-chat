@@ -75,6 +75,7 @@ class ChatClient {
 			e.printStackTrace();
 		} finally {
 			System.out.println("Connection ended");
+			scanner.close();
 			connection.close();
 		}
 	}
