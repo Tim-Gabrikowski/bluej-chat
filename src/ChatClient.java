@@ -5,41 +5,44 @@ import java.util.Scanner;
 class ChatClient {
 
 	public static void main(String[] args) throws IOException {
+		// define Hostname
 		String serverName = (args.length > 0) ? args[0] : "localhost";
 
-		System.out.println(
-			"Öffne Verbindung zu " + serverName + " auf Port 5001."
-		);
-		Socket connection = new Socket(serverName, 5001);
-
+		// Define Input Scanner
 		Scanner scanner = new Scanner(System.in);
 
+		// Username Input
 		System.out.print("Enter your username: ");
 		String username = scanner.nextLine();
 
+		// Connect to Server
+		System.out.println("Connect to " + serverName + ":5001");
+		Socket connection = new Socket(serverName, 5001);
+
 		try {
-			PrintWriter output = new PrintWriter(
+			// socketSend Stream (Client -> Server)
+			PrintWriter socketSend = new PrintWriter(
 				connection.getOutputStream(),
 				true
 			);
-			BufferedReader input = new BufferedReader(
+			// socketRecieve (Server -> Client)
+			BufferedReader socketRecieve = new BufferedReader(
 				new InputStreamReader(connection.getInputStream())
 			);
-			BufferedReader stdIn = new BufferedReader(
+			// messageInput (stdIn -> Software)
+			BufferedReader messageInput = new BufferedReader(
 				new InputStreamReader(System.in)
 			);
 
 			System.out.println(
-				"Verbunden mit " +
-				connection.getInetAddress().getHostName() +
-				"."
+				"Connected to " + connection.getInetAddress().getHostName()
 			);
 
 			// Thread for receiving messages from the server
 			Thread receiveThread = new Thread(() -> {
 				try {
 					String message;
-					while ((message = input.readLine()) != null) {
+					while ((message = socketRecieve.readLine()) != null) {
 						ChatMessage msg = ChatMessage.fromString(message);
 						System.out.println(msg.displayString());
 					}
@@ -47,29 +50,31 @@ class ChatClient {
 					e.printStackTrace();
 				}
 			});
-			receiveThread.start();
 
 			// Thread for sending messages to the server
 			Thread sendThread = new Thread(() -> {
 				try {
 					String message;
-					while ((message = stdIn.readLine()) != null) {
+					while ((message = messageInput.readLine()) != null) {
 						ChatMessage msg = new ChatMessage(message, username);
-						output.println(msg.toString());
+						socketSend.println(msg.toString());
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			});
+
+			// start Threads to Send and recieve
+			receiveThread.start();
 			sendThread.start();
 
-			// Wait for both threads to finish
+			// Wait for both threads to finish (aka leave chat / disconnect)
 			receiveThread.join();
 			sendThread.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("Verbindung beendet.");
+			System.out.println("Connection ended");
 			connection.close();
 		}
 	}

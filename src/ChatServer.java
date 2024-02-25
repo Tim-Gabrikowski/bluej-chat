@@ -11,24 +11,27 @@ public class ChatServer {
 	private static List<PrintWriter> clientWriters = new ArrayList<>();
 
 	public static void main(String[] args) throws IOException {
+		// start Server
 		ServerSocket serverSocket = new ServerSocket(5001);
-		System.out.println("Warte auf Verbindung auf Port 5001.");
+		System.out.println("Listening in Port 5001");
 
 		try {
 			while (true) {
+				// wait for new client connections
 				Socket clientSocket = serverSocket.accept();
 				System.out.println(
-					"Verbunden mit " +
-					clientSocket.getInetAddress().getHostName() +
-					"."
+					"Client connected: " +
+					clientSocket.getInetAddress().getHostName()
 				);
 
-				PrintWriter writer = new PrintWriter(
+				// Get clientSendStream to send to client (Server -> Client)
+				PrintWriter clientSendStream = new PrintWriter(
 					clientSocket.getOutputStream(),
 					true
 				);
-				clientWriters.add(writer);
+				clientWriters.add(clientSendStream);
 
+				// Create clientHandler that recieves Messages from client and handles them
 				Thread clientHandler = new Thread(
 					new ClientHandler(clientSocket)
 				);
@@ -50,13 +53,14 @@ public class ChatServer {
 		@Override
 		public void run() {
 			try {
-				BufferedReader reader = new BufferedReader(
+				// get clientRecieve stream (Client -> Server)
+				BufferedReader clientRecieve = new BufferedReader(
 					new InputStreamReader(clientSocket.getInputStream())
 				);
 				String message;
 
-				while ((message = reader.readLine()) != null) {
-					System.out.println(message);
+				while ((message = clientRecieve.readLine()) != null) {
+					// brodcast message to all clinets
 					broadcast(message);
 				}
 			} catch (IOException e) {
