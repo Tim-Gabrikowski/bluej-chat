@@ -42,9 +42,11 @@ all: $(CLS)
 $(CLS): $(OUT_DIR)/%.class: $(SRC_DIR)/%.java 
 	$(JC) $(JCFLAGS) $<
 
-run: $(CLS)
-	java -cp $(OUT_DIR) $(CLASS) $(HOST)
+server: $(CLS)
+	java -cp $(OUT_DIR) ChatServer $(PORT)
 
+client: $(CLS)
+	java -cp $(OUT_DIR) ChatClient $(HOST) $(PORT)
 
 ##
 # clean up any output files

@@ -7,6 +7,7 @@ class ChatClient {
 	public static void main(String[] args) throws IOException {
 		// define Hostname
 		String serverName = (args.length > 0) ? args[0] : "localhost";
+		int serverPort = (args.length > 1) ? Integer.parseInt(args[1]) : 5001;
 
 		// Define Input Scanner
 		Scanner scanner = new Scanner(System.in);
@@ -16,8 +17,8 @@ class ChatClient {
 		String username = scanner.nextLine();
 
 		// Connect to Server
-		System.out.println("Connect to " + serverName + ":5001");
-		Socket connection = new Socket(serverName, 5001);
+		System.out.println("Connect to " + serverName + ":" + serverPort);
+		Socket connection = new Socket(serverName, serverPort);
 
 		try {
 			// socketSend Stream (Client -> Server)

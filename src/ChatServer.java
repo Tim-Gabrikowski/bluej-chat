@@ -11,9 +11,10 @@ public class ChatServer {
 	private static List<PrintWriter> clientWriters = new ArrayList<>();
 
 	public static void main(String[] args) throws IOException {
+		int serverPort = (args.length > 0) ? Integer.parseInt(args[0]) : 5001;
 		// start Server
-		ServerSocket serverSocket = new ServerSocket(5001);
-		System.out.println("Listening in Port 5001");
+		ServerSocket serverSocket = new ServerSocket(serverPort);
+		System.out.println("Listening in Port " + serverPort);
 
 		try {
 			while (true) {
