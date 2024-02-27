@@ -42,6 +42,9 @@ all: $(CLS)
 $(CLS): $(OUT_DIR)/%.class: $(SRC_DIR)/%.java 
 	$(JC) $(JCFLAGS) $<
 
+HOST ?= localhost
+PORT ?= 5001
+
 server: $(CLS)
 	java -cp $(OUT_DIR) ChatServer $(PORT)
 
